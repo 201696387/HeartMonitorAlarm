@@ -10,6 +10,8 @@ import ca.jfmcode.heartmonitoralarm.R;
 import ca.jfmcode.heartmonitoralarm.System.HeartMonitorSystem;
 import ca.jfmcode.heartmonitoralarm.Tools.HMSysListener;
 
+import static ca.jfmcode.heartmonitoralarm.Tools.FinalVariables.*;
+
 public class LaunchActivity extends AppCompatActivity {
 
     @Override
@@ -22,11 +24,16 @@ public class LaunchActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        HeartMonitorSystem.getInstance().init(new HMSysListener() {
+        HeartMonitorSystem.getInstance().init(LaunchActivity.this, new HMSysListener() {
             @Override
             public void successful() {
                 startActivity(new Intent(LaunchActivity.this, MainActivity.class));
                 finish();
+            }
+
+            @Override
+            public void enableBT(Intent intent) {
+                startActivityForResult(intent, REQUEST_ENABLE_BT);
             }
 
             @Override
@@ -36,5 +43,14 @@ public class LaunchActivity extends AppCompatActivity {
                 //TODO: Open dialog showing error message with "ok" btn that closes the app
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_ENABLE_BT){
+
+        }
     }
 }
